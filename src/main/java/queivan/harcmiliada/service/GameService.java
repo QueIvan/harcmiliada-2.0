@@ -12,6 +12,7 @@ import queivan.harcmiliada.service.repository.GameRepository;
 import queivan.harcmiliada.service.repository.QuestionRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -80,10 +81,18 @@ public class GameService {
 
     public GameDto updateGame(GameDto gameDto, String userId){
         doesGameExist(gameDto.getId(), userId);
-        List<Question> questions = gameDto.getQuestions().stream().map(questionDto -> questionRepository.findById(questionDto.getId()).orElseThrow(() -> new QuestionNotFoundException(questionDto.getId()))).collect(Collectors.toList());
         Game mapped = mapper.mapToGame(gameDto);
-        mapped.setQuestions(questions);
-        Game game = repository.save(mapper.mapToGame(gameDto));
+        if(!gameDto.getQuestions().isEmpty()) {
+            List<Question> questions;
+            questions = gameDto.getQuestions().stream().map(questionDto -> questionRepository.findById(questionDto.getId()).orElseThrow(() -> new QuestionNotFoundException(questionDto.getId()))).collect(Collectors.toList());
+            mapped.setQuestions(questions);
+        }
+        if(gameDto.getCurrentQuestion() != null){
+            Question question;
+            question = questionRepository.findById(gameDto.getCurrentQuestion().getId()).orElseThrow(() -> new QuestionNotFoundException(gameDto.getCurrentQuestion().getId()));
+            mapped.setCurrentQuestion(question);
+        }
+        Game game = repository.save(mapped);
         service.log(LogDto.builder()
                 .userId(userId)
                 .message(String.format("Zaktualizowano grę o id: %s", gameDto.getId()))

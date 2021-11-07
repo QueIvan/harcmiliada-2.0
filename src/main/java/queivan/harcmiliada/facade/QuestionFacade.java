@@ -3,6 +3,7 @@ package queivan.harcmiliada.facade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import queivan.harcmiliada.domain.GameQuestionDto;
+import queivan.harcmiliada.domain.QuestionDto;
 import queivan.harcmiliada.service.QuestionService;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class QuestionFacade {
         return questionService.getAllQuestions(userId);
     }
 
-    public GameQuestionDto getQuestionById(UUID id, String userId) {
+    public QuestionDto getQuestionById(UUID id, String userId) {
         return questionService.getQuestionById(id, userId);
     }
 

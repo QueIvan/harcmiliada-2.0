@@ -12,11 +12,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GameQuestionDto {
+public class QuestionDto {
     private UUID id;
     private String content;
     private List<QuestionAnswerDto> answers;
+    private List<QuestionGameDto> games;
     private String creatorId;
     private boolean isPublic;
     private LocalDateTime createdAt;
+    private List<QuestionGameDto> currentInGame;
 }

@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import queivan.harcmiliada.domain.GameQuestionDto;
 import queivan.harcmiliada.domain.Question;
+import queivan.harcmiliada.domain.QuestionDto;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface QuestionMapper {
     GameQuestionDto mapToGameQuestionDto(Question question);
 
     Question mapToQuestion(GameQuestionDto question);
+
+    QuestionDto mapToQuestionDto(Question question);
 }

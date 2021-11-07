@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import queivan.harcmiliada.domain.GameQuestionDto;
 import queivan.harcmiliada.domain.LogDto;
+import queivan.harcmiliada.domain.QuestionDto;
 import queivan.harcmiliada.domain.enums.LogType;
 import queivan.harcmiliada.domain.Question;
 import queivan.harcmiliada.exceptions.QuestionDoesntExistException;
@@ -53,14 +54,14 @@ public class QuestionService {
         return mapper.mapToGameQuestionDtoList(questions);
     }
 
-    public GameQuestionDto getQuestionById(UUID id, String userId) {
+    public QuestionDto getQuestionById(UUID id, String userId) {
         Question question = repository.findById(id).orElseThrow(() -> new QuestionNotFoundException(id));
         service.log(LogDto.builder()
                 .userId(userId)
                 .message(String.format("Pobrano pytanie o id: %s", id))
                 .type(LogType.INFO)
                 .build());
-        return mapper.mapToGameQuestionDto(question);
+        return mapper.mapToQuestionDto(question);
     }
 
     public GameQuestionDto createQuestion(GameQuestionDto question, String userId) {

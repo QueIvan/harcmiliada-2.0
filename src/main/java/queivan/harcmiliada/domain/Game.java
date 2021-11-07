@@ -32,4 +32,7 @@ public class Game {
         this.questions = questions;
     }
 
+    public void setCurrentQuestion(Question question) {
+        this.currentQuestion = question;
+    }
 }
