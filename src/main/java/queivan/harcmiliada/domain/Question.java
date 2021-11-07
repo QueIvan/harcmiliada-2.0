@@ -30,6 +30,6 @@ public class Question {
     @Builder.Default
     private boolean isPublic = false;
     private LocalDateTime createdAt;
-    @OneToMany(mappedBy = "currentQuestion", cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "currentQuestion", cascade = javax.persistence.CascadeType.ALL)
     private List<Game> currentInGame;
 }
