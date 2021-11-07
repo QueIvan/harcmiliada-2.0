@@ -27,4 +27,9 @@ public class Game {
     private LocalDateTime createdAt;
     @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
     private Question currentQuestion;
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
 }

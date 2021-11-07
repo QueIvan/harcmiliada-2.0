@@ -2,25 +2,26 @@ package queivan.harcmiliada.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import queivan.harcmiliada.domain.Game;
-import queivan.harcmiliada.domain.GameDto;
-import queivan.harcmiliada.domain.GameQuestionDto;
-import queivan.harcmiliada.domain.LogDto;
+import queivan.harcmiliada.domain.*;
 import queivan.harcmiliada.domain.enums.LogType;
 import queivan.harcmiliada.exceptions.GameDoesntExistException;
 import queivan.harcmiliada.exceptions.GameNotFoundException;
+import queivan.harcmiliada.exceptions.QuestionNotFoundException;
 import queivan.harcmiliada.mapper.GameMapper;
 import queivan.harcmiliada.service.repository.GameRepository;
+import queivan.harcmiliada.service.repository.QuestionRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("SpellCheckingInspection")
 public class GameService {
     private final GameRepository repository;
+    private final QuestionRepository questionRepository;
     private final LogService service;
     private final GameMapper mapper;
 
@@ -79,6 +80,9 @@ public class GameService {
 
     public GameDto updateGame(GameDto gameDto, String userId){
         doesGameExist(gameDto.getId(), userId);
+        List<Question> questions = gameDto.getQuestions().stream().map(questionDto -> questionRepository.findById(questionDto.getId()).orElseThrow(() -> new QuestionNotFoundException(questionDto.getId()))).collect(Collectors.toList());
+        Game mapped = mapper.mapToGame(gameDto);
+        mapped.setQuestions(questions);
         Game game = repository.save(mapper.mapToGame(gameDto));
         service.log(LogDto.builder()
                 .userId(userId)
