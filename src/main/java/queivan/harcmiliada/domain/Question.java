@@ -22,7 +22,7 @@ public class Question {
     private String content;
     @OneToMany(mappedBy = "question", cascade = javax.persistence.CascadeType.ALL)
     private List<Answer> answers;
-    @ManyToMany(mappedBy = "questions", cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
+    @ManyToMany(mappedBy = "questions", cascade = javax.persistence.CascadeType.ALL)
     private List<Game> games;
     @NotNull
     private String creatorId;
