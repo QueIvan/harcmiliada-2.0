@@ -3,10 +3,7 @@ package queivan.harcmiliada.domain;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +23,8 @@ public class Game {
     @ManyToMany(cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
     private List<Question> questions;
     @NotNull
-    private UUID ownerId;
+    private String ownerId;
     private LocalDateTime createdAt;
+    @ManyToOne(cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
+    private Question currentQuestion;
 }

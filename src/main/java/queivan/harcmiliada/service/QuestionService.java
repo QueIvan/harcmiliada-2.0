@@ -23,7 +23,7 @@ public class QuestionService {
     private final LogService service;
     private final QuestionMapper mapper;
 
-    public List<GameQuestionDto> getAllPublicQuestions(UUID userId) {
+    public List<GameQuestionDto> getAllPublicQuestions(String userId) {
         List<Question> questions = repository.findAllByIsPublic(true);
         service.log(LogDto.builder()
                 .userId(userId)
@@ -33,7 +33,7 @@ public class QuestionService {
         return mapper.mapToGameQuestionDtoList(questions);
     }
 
-    public List<GameQuestionDto> getAllQuestionsByUserId(UUID id, UUID userId) {
+    public List<GameQuestionDto> getAllQuestionsByUserId(String id, String userId) {
         List<Question> questions = repository.findAllByCreatorId(id);
         service.log(LogDto.builder()
                 .userId(userId)
@@ -43,7 +43,7 @@ public class QuestionService {
         return mapper.mapToGameQuestionDtoList(questions);
     }
 
-    public List<GameQuestionDto> getAllQuestions(UUID userId) {
+    public List<GameQuestionDto> getAllQuestions(String userId) {
         List<Question> questions = repository.findAll();
         service.log(LogDto.builder()
                 .userId(userId)
@@ -53,7 +53,7 @@ public class QuestionService {
         return mapper.mapToGameQuestionDtoList(questions);
     }
 
-    public GameQuestionDto getQuestionById(UUID id, UUID userId) {
+    public GameQuestionDto getQuestionById(UUID id, String userId) {
         Question question = repository.findById(id).orElseThrow(() -> new QuestionNotFoundException(id));
         service.log(LogDto.builder()
                 .userId(userId)
@@ -63,7 +63,7 @@ public class QuestionService {
         return mapper.mapToGameQuestionDto(question);
     }
 
-    public GameQuestionDto createQuestion(GameQuestionDto question, UUID userId) {
+    public GameQuestionDto createQuestion(GameQuestionDto question, String userId) {
         question.setCreatedAt(LocalDateTime.now());
         Question savedQuestion = repository.save(mapper.mapToQuestion(question));
         savedQuestion.getAnswers().forEach(answer -> {
@@ -78,12 +78,10 @@ public class QuestionService {
         return mapper.mapToGameQuestionDto(savedQuestion);
     }
 
-    public GameQuestionDto updateQuestion(GameQuestionDto question, UUID userId) {
+    public GameQuestionDto updateQuestion(GameQuestionDto question, String userId) {
         doesQuestionExist(question.getId(), userId);
         Question updatedQuestion = repository.save(mapper.mapToQuestion(question));
-        updatedQuestion.getAnswers().forEach(answer -> {
-            answer.setQuestion(Question.builder().id(updatedQuestion.getId()).build());
-        });
+        updatedQuestion.getAnswers().forEach(answer -> answer.setQuestion(Question.builder().id(updatedQuestion.getId()).build()));
         service.log(LogDto.builder()
                 .userId(userId)
                 .message(String.format("Zaktualizowano pytanie o id: %s", updatedQuestion.getId()))
@@ -92,7 +90,7 @@ public class QuestionService {
         return mapper.mapToGameQuestionDto(updatedQuestion);
     }
 
-    public void deleteQuestion(UUID id, UUID userId) {
+    public void deleteQuestion(UUID id, String userId) {
         doesQuestionExist(id, userId);
         repository.deleteById(id);
         service.log(LogDto.builder()
@@ -102,7 +100,7 @@ public class QuestionService {
                 .build());
     }
 
-    public void doesQuestionExist(UUID id, UUID userId) {
+    public void doesQuestionExist(UUID id, String userId) {
         if(!repository.existsById(id)){
             service.log(LogDto.builder()
                     .userId(userId)

@@ -13,31 +13,31 @@ import java.util.UUID;
 public class QuestionFacade {
     private final QuestionService questionService;
 
-    public List<GameQuestionDto> getAllPublicQuestions(UUID userId) {
+    public List<GameQuestionDto> getAllPublicQuestions(String userId) {
         return questionService.getAllPublicQuestions(userId);
     }
 
-    public List<GameQuestionDto> getAllQuestionsByUserId(UUID id, UUID userId) {
+    public List<GameQuestionDto> getAllQuestionsByUserId(String id, String userId) {
         return questionService.getAllQuestionsByUserId(id, userId);
     }
 
-    public List<GameQuestionDto> getAllQuestions(UUID userId) {
+    public List<GameQuestionDto> getAllQuestions(String userId) {
         return questionService.getAllQuestions(userId);
     }
 
-    public GameQuestionDto getQuestionById(UUID id, UUID userId) {
+    public GameQuestionDto getQuestionById(UUID id, String userId) {
         return questionService.getQuestionById(id, userId);
     }
 
-    public GameQuestionDto createQuestion(GameQuestionDto question, UUID userId) {
+    public GameQuestionDto createQuestion(GameQuestionDto question, String userId) {
         return questionService.createQuestion(question, userId);
     }
 
-    public GameQuestionDto updateQuestion(GameQuestionDto question, UUID userId) {
+    public GameQuestionDto updateQuestion(GameQuestionDto question, String userId) {
         return questionService.updateQuestion(question, userId);
     }
 
-    public void deleteQuestion(UUID id, UUID userId) {
+    public void deleteQuestion(UUID id, String userId) {
         questionService.deleteQuestion(id, userId);
     }
 

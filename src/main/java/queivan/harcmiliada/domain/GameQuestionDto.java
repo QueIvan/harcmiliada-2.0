@@ -16,7 +16,8 @@ public class GameQuestionDto {
     private UUID id;
     private String content;
     private List<QuestionAnswerDto> answers;
-    private UUID creatorId;
+    private String creatorId;
     private boolean isPublic;
     private LocalDateTime createdAt;
+    private List<GameDto> currentInGame;
 }

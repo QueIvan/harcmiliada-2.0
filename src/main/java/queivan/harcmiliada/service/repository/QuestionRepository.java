@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, UUID> {
+    @SuppressWarnings("SpringDataMethodInconsistencyInspection")
     List<Question> findAllByIsPublic(boolean isPublic);
-    List<Question> findAllByCreatorId(UUID id);
+    List<Question> findAllByCreatorId(String id);
 }

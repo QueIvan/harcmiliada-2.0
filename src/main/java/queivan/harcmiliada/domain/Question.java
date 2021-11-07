@@ -25,9 +25,11 @@ public class Question {
     @ManyToMany(mappedBy = "questions", cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
     private List<Game> games;
     @NotNull
-    private UUID creatorId;
+    private String creatorId;
     @NotNull
     @Builder.Default
     private boolean isPublic = false;
     private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "currentQuestion", cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true)
+    private List<Game> currentInGame;
 }

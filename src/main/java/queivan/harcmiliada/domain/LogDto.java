@@ -14,6 +14,6 @@ public class LogDto {
     private UUID id;
     private LogType type;
     private String message;
-    private UUID userId;
+    private String userId;
     private LocalDateTime createdAt;
 }

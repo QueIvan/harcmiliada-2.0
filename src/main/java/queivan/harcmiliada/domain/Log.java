@@ -25,6 +25,6 @@ public class Log {
     @NotNull
     private String message;
     @NotNull
-    private UUID userId;
+    private String userId;
     private LocalDateTime createdAt;
 }

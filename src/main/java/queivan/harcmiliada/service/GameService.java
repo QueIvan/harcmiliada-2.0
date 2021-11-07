@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import queivan.harcmiliada.domain.Game;
 import queivan.harcmiliada.domain.GameDto;
+import queivan.harcmiliada.domain.GameQuestionDto;
 import queivan.harcmiliada.domain.LogDto;
 import queivan.harcmiliada.domain.enums.LogType;
 import queivan.harcmiliada.exceptions.GameDoesntExistException;
@@ -23,7 +24,18 @@ public class GameService {
     private final LogService service;
     private final GameMapper mapper;
 
-    public List<GameDto> getAllGames(UUID userId) {
+    public GameQuestionDto getGamesCurrentQuestion(UUID id, String userId){
+        doesGameExist(id, userId);
+        Game game = repository.findById(id).orElseThrow(() -> new GameNotFoundException(id));
+        service.log(LogDto.builder()
+                .userId(userId)
+                .message(String.format("Pobrano pytanie grę o id: %s", id))
+                .type(LogType.INFO)
+                .build());
+        return mapper.mapToGameDto(game).getCurrentQuestion();
+    }
+
+    public List<GameDto> getAllGames(String userId) {
         List<Game> games = repository.findAll();
         service.log(LogDto.builder()
                 .userId(userId)
@@ -33,7 +45,7 @@ public class GameService {
         return mapper.mapToGameDtoList(games);
     }
 
-    public List<GameDto> getAllGamesByOwnerId(UUID id, UUID userId){
+    public List<GameDto> getAllGamesByOwnerId(UUID id, String userId){
         List<Game> games = repository.findAllByOwnerId(id);
         service.log(LogDto.builder()
                         .userId(userId)
@@ -43,7 +55,7 @@ public class GameService {
         return mapper.mapToGameDtoList(games);
     }
 
-    public GameDto getGameById(UUID id, UUID userId){
+    public GameDto getGameById(UUID id, String userId){
         doesGameExist(id, userId);
         Game game = repository.findById(id).orElseThrow(() -> new GameNotFoundException(id));
         service.log(LogDto.builder()
@@ -54,7 +66,7 @@ public class GameService {
         return mapper.mapToGameDto(game);
     }
 
-    public GameDto createGame(GameDto gameDto, UUID userId){
+    public GameDto createGame(GameDto gameDto, String userId){
         gameDto.setCreatedAt(LocalDateTime.now());
         Game game = repository.save(mapper.mapToGame(gameDto));
         service.log(LogDto.builder()
@@ -65,7 +77,7 @@ public class GameService {
         return mapper.mapToGameDto(game);
     }
 
-    public GameDto updateGame(GameDto gameDto, UUID userId){
+    public GameDto updateGame(GameDto gameDto, String userId){
         doesGameExist(gameDto.getId(), userId);
         Game game = repository.save(mapper.mapToGame(gameDto));
         service.log(LogDto.builder()
@@ -76,7 +88,7 @@ public class GameService {
         return mapper.mapToGameDto(game);
     }
 
-    public void deleteGame(UUID id, UUID userId){
+    public void deleteGame(UUID id, String userId){
         doesGameExist(id, userId);
         service.log(LogDto.builder()
                 .userId(userId)
@@ -86,7 +98,7 @@ public class GameService {
         repository.deleteById(id);
     }
 
-    private void doesGameExist(UUID id, UUID userId) {
+    private void doesGameExist(UUID id, String userId) {
         if(!repository.existsById(id)){
             service.log(LogDto.builder()
                     .userId(userId)

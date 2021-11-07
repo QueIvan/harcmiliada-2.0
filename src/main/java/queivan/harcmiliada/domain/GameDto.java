@@ -14,6 +14,7 @@ public class GameDto {
     private UUID id;
     private String name;
     private List<GameQuestionDto> questions;
-    private UUID ownerId;
+    private String ownerId;
     private LocalDateTime createdAt;
+    private GameQuestionDto currentQuestion;
 }
