@@ -47,7 +47,7 @@ public class GameService {
         return mapper.mapToGameDtoList(games);
     }
 
-    public List<GameDto> getAllGamesByOwnerId(UUID id, String userId){
+    public List<GameDto> getAllGamesByOwnerId(String id, String userId){
         List<Game> games = repository.findAllByOwnerId(id);
         service.log(LogDto.builder()
                         .userId(userId)

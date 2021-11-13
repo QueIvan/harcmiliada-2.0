@@ -18,7 +18,7 @@ public class GameFacade {
         return gameService.getGamesCurrentQuestion(gameId, userId);
     }
 
-    public List<GameDto> getAllGamesByOwnerId(UUID id, String userId) {
+    public List<GameDto> getAllGamesByOwnerId(String id, String userId) {
         return gameService.getAllGamesByOwnerId(id, userId);
     }
 

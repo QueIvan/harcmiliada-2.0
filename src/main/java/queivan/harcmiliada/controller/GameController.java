@@ -24,7 +24,7 @@ public class GameController {
     }
 
     @GetMapping(value = "/owner/{ownerId}/{userId}", produces = APPLICATION_JSON_VALUE)
-    public List<GameDto> getAllGamesByOwnerId(@PathVariable("ownerId") UUID ownerId, @PathVariable("userId") String userId) {
+    public List<GameDto> getAllGamesByOwnerId(@PathVariable("ownerId") String ownerId, @PathVariable("userId") String userId) {
         return facade.getAllGamesByOwnerId(ownerId, userId);
     }
 
