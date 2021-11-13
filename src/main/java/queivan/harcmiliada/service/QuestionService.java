@@ -84,7 +84,7 @@ public class QuestionService {
         Question updatedQuestion = repository.save(mapper.mapToQuestion(question));
         updatedQuestion.getAnswers().forEach(answer -> answer.setQuestion(Question.builder().id(updatedQuestion.getId()).build()));
         updatedQuestion.getAnswers().forEach(answer -> {
-            if (answer.getId() == null) {
+            if(answer.getCreatedAt() == null) {
                 answer.setCreatedAt(LocalDateTime.now());
             }
         });
