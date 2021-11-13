@@ -83,6 +83,11 @@ public class QuestionService {
         doesQuestionExist(question.getId(), userId);
         Question updatedQuestion = repository.save(mapper.mapToQuestion(question));
         updatedQuestion.getAnswers().forEach(answer -> answer.setQuestion(Question.builder().id(updatedQuestion.getId()).build()));
+        updatedQuestion.getAnswers().forEach(answer -> {
+            if (answer.getId() == null) {
+                answer.setCreatedAt(LocalDateTime.now());
+            }
+        });
         service.log(LogDto.builder()
                 .userId(userId)
                 .message(String.format("Zaktualizowano pytanie o id: %s", updatedQuestion.getId()))
