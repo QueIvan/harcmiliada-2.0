@@ -48,6 +48,11 @@ public class GameController {
         return facade.updateGame(game, userId);
     }
 
+    @PutMapping(value="/{gameId}/current/{questionId}/{userId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public GameQuestionDto setCurrentQuestion(@RequestBody UUID gameId, @PathVariable("questionId") UUID questionId, @PathVariable("userId") String userId) {
+        return facade.setCurrent(gameId, questionId, userId);
+    }
+
     @DeleteMapping(value = "/{gameId}/{userId}")
     public void deleteGame(@PathVariable("gameId") UUID gameId, @PathVariable("userId") String userId) {
         facade.deleteGame(gameId, userId);

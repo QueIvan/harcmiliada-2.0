@@ -122,4 +122,17 @@ public class GameService {
         }
     }
 
+    public GameQuestionDto setCurrent(UUID gameId, UUID questionId, String userId) {
+        doesGameExist(gameId, userId);
+        Game game = repository.findById(gameId).orElseThrow(() -> new GameNotFoundException(gameId));
+        Question question = questionRepository.findById(questionId).orElseThrow(() -> new QuestionNotFoundException(questionId));
+        game.setCurrentQuestion(question);
+        Game saved = repository.save(game);
+        service.log(LogDto.builder()
+                .userId(userId)
+                .message(String.format("Ustawiono aktualne pytanie dla gry o id: %s", gameId))
+                .type(LogType.INFO)
+                .build());
+        return mapper.mapToGameDto(game).getCurrentQuestion();
+    }
 }

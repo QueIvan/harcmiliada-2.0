@@ -41,4 +41,8 @@ public class GameFacade {
     public List<GameDto> getAllGames(String userId) {
         return gameService.getAllGames(userId);
     }
+
+    public GameQuestionDto setCurrent(UUID gameId, UUID questionId, String userId) {
+        return gameService.setCurrent(gameId, questionId, userId);
+    }
 }
