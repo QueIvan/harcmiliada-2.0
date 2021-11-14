@@ -49,7 +49,7 @@ public class GameController {
     }
 
     @PutMapping(value="/{gameId}/current/{questionId}/{userId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public GameQuestionDto setCurrentQuestion(@RequestBody UUID gameId, @PathVariable("questionId") UUID questionId, @PathVariable("userId") String userId) {
+    public GameQuestionDto setCurrentQuestion(@PathVariable("gameId") UUID gameId, @PathVariable("questionId") UUID questionId, @PathVariable("userId") String userId) {
         return facade.setCurrent(gameId, questionId, userId);
     }
 
