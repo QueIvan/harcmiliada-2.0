@@ -2,6 +2,7 @@ package queivan.harcmiliada.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import queivan.harcmiliada.domain.Game;
 import queivan.harcmiliada.domain.GameQuestionDto;
 import queivan.harcmiliada.domain.QuestionDto;
 import queivan.harcmiliada.facade.QuestionFacade;
@@ -21,6 +22,11 @@ public class QuestionController {
     @GetMapping(value = "/public/{userId}", produces = APPLICATION_JSON_VALUE)
     public List<GameQuestionDto> getAllPublicQuestions(@PathVariable("userId") String userId) {
         return facade.getAllPublicQuestions(userId);
+    }
+
+    @GetMapping(value = "/notin/{gameId}/{userId}", produces = APPLICATION_JSON_VALUE)
+    public List<GameQuestionDto> getAllQuestionsNotInGame(@PathVariable("gameId") UUID gameId, @PathVariable("userId") String userId) {
+        return facade.getAllQuestionsNotInGame(gameId, userId);
     }
 
     @GetMapping(value = "/creator/{creatorId}/{userId}", produces = APPLICATION_JSON_VALUE)

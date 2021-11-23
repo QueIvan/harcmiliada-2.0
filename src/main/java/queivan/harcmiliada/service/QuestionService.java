@@ -117,4 +117,13 @@ public class QuestionService {
         }
     }
 
+    public List<GameQuestionDto> getAllQuestionsNotInGame(UUID gameId, String userId) {
+        List<Question> questions = repository.findAllNotInGame(gameId, userId);
+        service.log(LogDto.builder()
+                .userId(userId)
+                .message(String.format("Pobrano wszystkie pytania które nie są przypisane do gry o id: %s", gameId))
+                .type(LogType.INFO)
+                .build());
+        return mapper.mapToGameQuestionDtoList(questions);
+    }
 }

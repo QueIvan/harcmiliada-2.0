@@ -42,4 +42,7 @@ public class QuestionFacade {
         questionService.deleteQuestion(id, userId);
     }
 
+    public List<GameQuestionDto> getAllQuestionsNotInGame(UUID gameId, String userId) {
+        return questionService.getAllQuestionsNotInGame(gameId, userId);
+    }
 }
