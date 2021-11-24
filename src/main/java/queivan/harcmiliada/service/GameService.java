@@ -1,6 +1,7 @@
 package queivan.harcmiliada.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import queivan.harcmiliada.domain.*;
 import queivan.harcmiliada.domain.enums.LogType;
@@ -102,7 +103,9 @@ public class GameService {
     }
 
     public void deleteGame(UUID id, String userId){
+        System.out.println(id);
         doesGameExist(id, userId);
+        repository.deleteReference(id);
         service.log(LogDto.builder()
                 .userId(userId)
                 .message(String.format("Usunięto grę o id: %s", id))
