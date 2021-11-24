@@ -25,7 +25,7 @@ public class QuestionService {
     private final QuestionMapper mapper;
 
     public List<GameQuestionDto> getAllPublicQuestions(String userId) {
-        List<Question> questions = repository.findAllByIsPublic(true);
+        List<Question> questions = repository.findAllByInPublicLib(true);
         service.log(LogDto.builder()
                 .userId(userId)
                 .message("Pobrano wszystkie pytania o statusie publicznym")
@@ -36,6 +36,7 @@ public class QuestionService {
 
     public List<GameQuestionDto> getAllQuestionsByUserId(String id, String userId) {
         List<Question> questions = repository.findAllByCreatorId(id);
+        questions.forEach(question -> System.out.println(question.isInPublicLib()));
         service.log(LogDto.builder()
                 .userId(userId)
                 .message(String.format("Pobrano wszystkie pytania użytkownika o id: %s", id))
@@ -136,5 +137,17 @@ public class QuestionService {
                 .message("Usunięto wybrane pytania")
                 .type(LogType.INFO)
                 .build());
+    }
+
+    public GameQuestionDto changeGameStatus(UUID questionId, String userId) {
+        Question question = repository.findById(questionId).orElseThrow(() -> new QuestionNotFoundException(questionId));
+        question.setPublic();
+        Question updatedQuestion = repository.save(question);
+        service.log(LogDto.builder()
+                .userId(userId)
+                .message(String.format("Zmieniono status pytania o id: %s", questionId))
+                .type(LogType.INFO)
+                .build());
+        return mapper.mapToGameQuestionDto(updatedQuestion);
     }
 }

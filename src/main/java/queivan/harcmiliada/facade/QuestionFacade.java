@@ -49,4 +49,8 @@ public class QuestionFacade {
     public void deleteMultipleQuestions(List<UUID> questionIds, String userId) {
         questionService.deleteMultipleQuestions(questionIds, userId);
     }
+
+    public GameQuestionDto changeGameStatus(UUID questionId, String userId) {
+        return questionService.changeGameStatus(questionId, userId);
+    }
 }

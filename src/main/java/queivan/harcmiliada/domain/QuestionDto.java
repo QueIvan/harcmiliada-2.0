@@ -19,7 +19,7 @@ public class QuestionDto {
     private List<QuestionAnswerDto> answers;
     private List<QuestionGameDto> games;
     private String creatorId;
-    private boolean isPublic;
+    private boolean inPublicLib;
     private LocalDateTime createdAt;
     private List<QuestionGameDto> currentInGame;
 }

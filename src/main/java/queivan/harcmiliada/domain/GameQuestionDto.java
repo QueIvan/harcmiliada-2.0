@@ -17,6 +17,6 @@ public class GameQuestionDto {
     private String content;
     private List<QuestionAnswerDto> answers;
     private String creatorId;
-    private boolean isPublic;
+    private boolean inPublicLib;
     private LocalDateTime createdAt;
 }

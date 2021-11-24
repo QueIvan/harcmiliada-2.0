@@ -20,12 +20,12 @@ public class Game {
     private UUID id;
     @NotNull
     private String name;
-    @ManyToMany(cascade = javax.persistence.CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Question> questions;
     @NotNull
     private String ownerId;
     private LocalDateTime createdAt;
-    @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Question currentQuestion;
 
     public void setQuestions(List<Question> questions) {

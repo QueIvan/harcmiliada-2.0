@@ -28,8 +28,13 @@ public class Question {
     private String creatorId;
     @NotNull
     @Builder.Default
-    private boolean isPublic = false;
+    private boolean inPublicLib = false;
     private LocalDateTime createdAt;
     @OneToMany(mappedBy = "currentQuestion", cascade = javax.persistence.CascadeType.ALL)
     private List<Game> currentInGame;
+
+    public void setPublic() {
+        this.inPublicLib = !this.inPublicLib;
+    }
+
 }
