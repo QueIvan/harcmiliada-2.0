@@ -22,7 +22,7 @@ public class Question {
     private String content;
     @OneToMany(mappedBy = "question", cascade = javax.persistence.CascadeType.ALL)
     private List<Answer> answers;
-    @ManyToMany(mappedBy = "questions", cascade = javax.persistence.CascadeType.ALL)
+    @ManyToMany(mappedBy = "questions", cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
     private List<Game> games;
     @NotNull
     private String creatorId;
@@ -30,7 +30,7 @@ public class Question {
     @Builder.Default
     private boolean inPublicLib = false;
     private LocalDateTime createdAt;
-    @OneToMany(mappedBy = "currentQuestion", cascade = javax.persistence.CascadeType.ALL)
+    @OneToMany(mappedBy = "currentQuestion", cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
     private List<Game> currentInGame;
 
     public void setPublic() {
