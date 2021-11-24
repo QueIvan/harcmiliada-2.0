@@ -36,7 +36,6 @@ public class QuestionService {
 
     public List<GameQuestionDto> getAllQuestionsByUserId(String id, String userId) {
         List<Question> questions = repository.findAllByCreatorId(id);
-        questions.forEach(question -> System.out.println(question.isInPublicLib()));
         service.log(LogDto.builder()
                 .userId(userId)
                 .message(String.format("Pobrano wszystkie pytania użytkownika o id: %s", id))
