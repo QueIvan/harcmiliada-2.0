@@ -59,6 +59,9 @@ public class QuestionController {
         facade.deleteQuestion(questionId, userId);
     }
 
-
+    @DeleteMapping(value="/multiple/{userId}", consumes = APPLICATION_JSON_VALUE)
+    public void deleteMultipleQuestions(@RequestBody List<UUID> questionIds, @PathVariable("userId") String userId) {
+        facade.deleteMultipleQuestions(questionIds, userId);
+    }
 
 }

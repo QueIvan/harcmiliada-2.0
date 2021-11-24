@@ -45,4 +45,8 @@ public class QuestionFacade {
     public List<GameQuestionDto> getAllQuestionsNotInGame(UUID gameId, String userId) {
         return questionService.getAllQuestionsNotInGame(gameId, userId);
     }
+
+    public void deleteMultipleQuestions(List<UUID> questionIds, String userId) {
+        questionService.deleteMultipleQuestions(questionIds, userId);
+    }
 }

@@ -58,4 +58,8 @@ public class GameController {
         facade.deleteGame(gameId, userId);
     }
 
+    @DeleteMapping(value = "/multiple/{userId}", consumes = APPLICATION_JSON_VALUE)
+    public void deleteMultipleGames(@RequestBody List<UUID> gameIds, @PathVariable("userId") String userId) {
+        facade.deleteMultipleGames(gameIds, userId);
+    }
 }

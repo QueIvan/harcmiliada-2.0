@@ -135,4 +135,10 @@ public class GameService {
                 .build());
         return mapper.mapToGameDto(game).getCurrentQuestion();
     }
+
+    public void deleteMultipleGames(List<UUID> gameIds, String userId) {
+        for(UUID id : gameIds){
+            deleteGame(id, userId);
+        }
+    }
 }

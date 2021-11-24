@@ -45,4 +45,8 @@ public class GameFacade {
     public GameQuestionDto setCurrent(UUID gameId, UUID questionId, String userId) {
         return gameService.setCurrent(gameId, questionId, userId);
     }
+
+    public void deleteMultipleGames(List<UUID> gameIds, String userId) {
+        gameService.deleteMultipleGames(gameIds, userId);
+    }
 }

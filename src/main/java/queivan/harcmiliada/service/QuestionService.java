@@ -126,4 +126,15 @@ public class QuestionService {
                 .build());
         return mapper.mapToGameQuestionDtoList(questions);
     }
+
+    public void deleteMultipleQuestions(List<UUID> questionIds, String userId) {
+        for(UUID id : questionIds) {
+            deleteQuestion(id, userId);
+        }
+        service.log(LogDto.builder()
+                .userId(userId)
+                .message("Usunięto wybrane pytania")
+                .type(LogType.INFO)
+                .build());
+    }
 }
