@@ -20,7 +20,7 @@ public class Question {
     private UUID id;
     @NotNull
     private String content;
-    @OneToMany(mappedBy = "question", cascade = javax.persistence.CascadeType.ALL)
+    @OneToMany(mappedBy = "question", cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers;
     @ManyToMany(mappedBy = "questions", cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
     private List<Game> games;
