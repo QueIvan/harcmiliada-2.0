@@ -10,6 +10,7 @@ import queivan.harcmiliada.exceptions.GameNotFoundException;
 import queivan.harcmiliada.exceptions.QuestionNotFoundException;
 import queivan.harcmiliada.mapper.GameMapper;
 import queivan.harcmiliada.service.repository.GameRepository;
+import queivan.harcmiliada.service.repository.GroupRepository;
 import queivan.harcmiliada.service.repository.QuestionRepository;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class GameService {
     private final GameRepository repository;
     private final QuestionRepository questionRepository;
+    private final GroupRepository groupRepository;
     private final LogService service;
     private final GameMapper mapper;
 
@@ -49,13 +51,15 @@ public class GameService {
     }
 
     public List<GameDto> getAllGamesByOwnerId(String id, String userId){
-        List<Game> games = repository.findAllByOwnerId(id);
+        List<Group> groups = groupRepository.findByUsersContains(id);
+        List<Game> allGames = new ArrayList<>(repository.findAllByOwnerId(id));
+        groups.forEach(group -> allGames.addAll(repository.findAllByOwnerId(String.valueOf(group.getId()))));
         service.log(LogDto.builder()
                         .userId(userId)
                         .message(String.format("Pobrano wszystkie gry użytkownika o id: %s", id))
                         .type(LogType.INFO)
                         .build());
-        return mapper.mapToGameDtoList(games);
+        return mapper.mapToGameDtoList(allGames);
     }
 
     public GameDto getGameById(UUID id, String userId){
@@ -71,6 +75,7 @@ public class GameService {
 
     public GameDto createGame(GameDto gameDto, String userId){
         gameDto.setCreatedAt(LocalDateTime.now());
+        System.out.println(gameDto.getOwnerId());
         Game game = repository.save(mapper.mapToGame(gameDto));
         service.log(LogDto.builder()
                 .userId(userId)

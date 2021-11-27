@@ -2,46 +2,48 @@ package queivan.harcmiliada.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import queivan.harcmiliada.domain.GameQuestionDto;
-import queivan.harcmiliada.domain.LogDto;
-import queivan.harcmiliada.domain.QuestionDto;
+import queivan.harcmiliada.domain.*;
 import queivan.harcmiliada.domain.enums.LogType;
-import queivan.harcmiliada.domain.Question;
 import queivan.harcmiliada.exceptions.QuestionDoesntExistException;
 import queivan.harcmiliada.exceptions.QuestionNotFoundException;
 import queivan.harcmiliada.mapper.QuestionMapper;
+import queivan.harcmiliada.service.repository.GroupRepository;
 import queivan.harcmiliada.service.repository.QuestionRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("SpellCheckingInspection")
 public class QuestionService {
     private final QuestionRepository repository;
+    private final GroupRepository groupRepository;
     private final LogService service;
     private final QuestionMapper mapper;
 
     public List<GameQuestionDto> getAllPublicQuestions(String userId) {
-        List<Question> questions = repository.findAllByInPublicLib(true);
+        List<Group> groups = groupRepository.findByUsersContains(userId);
+        List<Question> allQuestions = repository.findAllByInPublicLib(true);
+        groups.forEach(group -> allQuestions.addAll(repository.findAllByCreatorId(String.valueOf(group.getId()))));
         service.log(LogDto.builder()
                 .userId(userId)
                 .message("Pobrano wszystkie pytania o statusie publicznym")
                 .type(LogType.INFO)
                 .build());
-        return mapper.mapToGameQuestionDtoList(questions);
+        return mapper.mapToGameQuestionDtoList(allQuestions);
     }
 
     public List<GameQuestionDto> getAllQuestionsByUserId(String id, String userId) {
-        List<Question> questions = repository.findAllByCreatorId(id);
+        List<Group> groups = groupRepository.findByUsersContains(userId);
+        List<Question> allQuestions = repository.findAllByCreatorId(id);
+        groups.forEach(group -> allQuestions.addAll(repository.findAllByCreatorId(String.valueOf(group.getId()))));
         service.log(LogDto.builder()
                 .userId(userId)
                 .message(String.format("Pobrano wszystkie pytania użytkownika o id: %s", id))
                 .type(LogType.INFO)
                 .build());
-        return mapper.mapToGameQuestionDtoList(questions);
+        return mapper.mapToGameQuestionDtoList(allQuestions);
     }
 
     public List<GameQuestionDto> getAllQuestions(String userId) {
@@ -118,7 +120,12 @@ public class QuestionService {
     }
 
     public List<GameQuestionDto> getAllQuestionsNotInGame(UUID gameId, String userId) {
+        List<Group> groups = groupRepository.findByUsersContains(userId);
         List<Question> questions = repository.findAllNotInGame(gameId, userId);
+        groups.forEach(group -> questions.addAll(repository.findAllNotInGame(gameId, group.getId().toString())));
+        Set<Question> uniqueQuestions = new HashSet<>(questions);
+        questions.clear();
+        questions.addAll(uniqueQuestions);
         service.log(LogDto.builder()
                 .userId(userId)
                 .message(String.format("Pobrano wszystkie pytania które nie są przypisane do gry o id: %s", gameId))
