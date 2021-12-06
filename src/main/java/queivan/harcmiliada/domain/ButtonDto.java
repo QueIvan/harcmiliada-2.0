@@ -15,4 +15,5 @@ public class ButtonDto {
     private UUID id;
     private GameDto current;
     private String qrCode;
+    private String ownerId;
 }

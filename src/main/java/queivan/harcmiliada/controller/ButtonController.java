@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import queivan.harcmiliada.domain.ButtonDto;
 import queivan.harcmiliada.facade.ButtonFacade;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -19,6 +20,11 @@ public class ButtonController {
     @GetMapping("/{buttonCode}/{userId}")
     public UUID getButtonsGameId(@PathVariable("buttonCode") String buttonCode, @PathVariable("userId") String userId) {
         return facade.getButtonsGameId(buttonCode, userId);
+    }
+
+    @GetMapping(value = "/{userId}", produces = APPLICATION_JSON_VALUE)
+    public List<ButtonDto> getButtons(@PathVariable("userId") String userId) {
+        return facade.getButtons(userId);
     }
 
     @PostMapping(value = "/{userId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)

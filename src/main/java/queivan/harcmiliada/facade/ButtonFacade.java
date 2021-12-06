@@ -6,6 +6,7 @@ import queivan.harcmiliada.domain.Button;
 import queivan.harcmiliada.domain.ButtonDto;
 import queivan.harcmiliada.service.ButtonService;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -29,4 +30,7 @@ public class ButtonFacade {
         service.deleteButton(buttonId, userId);
     }
 
+    public List<ButtonDto> getButtons(String userId) {
+        return service.getButtons(userId);
+    }
 }

@@ -2,23 +2,25 @@ package queivan.harcmiliada.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import queivan.harcmiliada.domain.Button;
-import queivan.harcmiliada.domain.ButtonDto;
-import queivan.harcmiliada.domain.LogDto;
+import queivan.harcmiliada.domain.*;
 import queivan.harcmiliada.domain.enums.LogType;
 import queivan.harcmiliada.exceptions.GameNotFoundException;
 import queivan.harcmiliada.mapper.ButtonMapper;
 import queivan.harcmiliada.service.repository.ButtonRepository;
 import queivan.harcmiliada.service.repository.GameRepository;
+import queivan.harcmiliada.service.repository.GroupRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("SpellCheckingInspection")
 public class ButtonService {
-    private final ButtonRepository repository;
+    private final GroupRepository groupRepository;
     private final GameRepository gameRepository;
+    private final ButtonRepository repository;
     private final ButtonMapper mapper;
     private final LogService log;
 
@@ -63,4 +65,15 @@ public class ButtonService {
                 .build());
     }
 
+    public List<ButtonDto> getButtons(String userId) {
+        List<Group> groups = groupRepository.findByUsersContains(userId);
+        List<Button> allButtons = new ArrayList<>(repository.findAllByOwnerId(userId));
+        groups.forEach(group -> allButtons.addAll(repository.findAllByOwnerId(String.valueOf(group.getId()))));
+        log.log(LogDto.builder()
+                .userId(userId)
+                .message(String.format("Użytkownik o id %s pobrał listę swoich przycisków", userId))
+                .type(LogType.INFO)
+                .build());
+        return mapper.mapToButtonDtoList(allButtons);
+    }
 }

@@ -14,4 +14,5 @@ import java.util.UUID;
 @Repository
 public interface ButtonRepository extends JpaRepository<Button, UUID> {
     Optional<Button> findByQrCode(String name);
+    List<Button> findAllByOwnerId(String ownerId);
 }

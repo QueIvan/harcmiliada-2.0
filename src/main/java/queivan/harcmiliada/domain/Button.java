@@ -26,6 +26,8 @@ public class Button {
     private Game current;
     @NotNull
     private String qrCode;
+    @NotNull
+    private String ownerId;
 
     public void setCurrent(Game current) {
         this.current = current;
