@@ -27,6 +27,8 @@ public class Game {
     private LocalDateTime createdAt;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Question currentQuestion;
+    @OneToMany(mappedBy = "current", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<Button> buttons;
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
