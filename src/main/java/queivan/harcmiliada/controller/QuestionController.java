@@ -2,7 +2,6 @@ package queivan.harcmiliada.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import queivan.harcmiliada.domain.Game;
 import queivan.harcmiliada.domain.GameQuestionDto;
 import queivan.harcmiliada.domain.QuestionDto;
 import queivan.harcmiliada.facade.QuestionFacade;
@@ -12,7 +11,7 @@ import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://www.harcmiliada.pl/")
 @RestController
 @RequestMapping("/questions")
 @RequiredArgsConstructor

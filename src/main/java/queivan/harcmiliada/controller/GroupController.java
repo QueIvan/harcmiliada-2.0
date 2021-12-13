@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://www.harcmiliada.pl/")
 @RestController
 @RequestMapping("/groups")
 @RequiredArgsConstructor
