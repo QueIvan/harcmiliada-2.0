@@ -21,6 +21,10 @@ public class GroupService {
     private final LogService log;
 
     public List<GroupDto> getAllUsingUserId(String userId) {
+        log.log(LogDto.builder().userId(userId)
+                .message("HELP ME DO KURWY")
+                .type(LogType.ERROR)
+                .build());
         return mapper.mapToGroupDtoList(repository.findByUsersContains(userId));
     }
 
